@@ -24,7 +24,7 @@ from botbuilder.core.adapters import TestAdapter
 
 class LuisTest(aiounittest.AsyncTestCase):
 
-    # Test la requête vers Luis et la réponse obtenue
+    # Test la requête vers Luis et la réponse obtenue avec ai
     async def test_luis_query(self):
 
         CONFIG = DefaultConfig()
