@@ -82,3 +82,124 @@ class LuisTest(aiounittest.AsyncTestCase):
                 }
             ),
         )
+  
+class BotTest(aiounittest.AsyncTestCase):
+
+    # Test une réservation étape par étape
+    async def test_booking_step_by_step(self):
+        async def exec_test(turn_context: TurnContext):
+            dialog_context = await dialogs.create_context(turn_context)
+            results = await dialog_context.continue_dialog()
+
+            if results.status == DialogTurnStatus.Empty:
+                await main_dialog.intro_step(dialog_context)
+
+            elif results.status == DialogTurnStatus.Complete:
+                await main_dialog.act_step(dialog_context)
+
+            await conv_state.save_changes(turn_context)
+
+
+        conv_state = ConversationState(MemoryStorage())
+        dialogs_state = conv_state.create_property("dialog-state")
+        dialogs = DialogSet(dialogs_state)
+
+        booking_dialog = BookingDialog()
+        main_dialog = MainDialog(
+            FlightBookingRecognizer(DefaultConfig()), booking_dialog
+        )
+        dialogs.add(booking_dialog)
+
+        text_prompt = await main_dialog.find_dialog(TextPrompt.__name__)
+        dialogs.add(text_prompt)
+
+        wf_dialog = await main_dialog.find_dialog("WFDialog")
+        dialogs.add(wf_dialog)
+
+        adapter = TestAdapter(exec_test)
+
+        await adapter.test("Hello", "What can I help you with today?")
+        await adapter.test("I want to go to Paris", "From what city will you be travelling?")
+        await adapter.test("from New York", "On what date would you like to travel?")
+        await adapter.test("the 21 september 2022", "On what date would you like to return?")
+        await adapter.test("the 5 october 2022", "What is your budget for traveling?")
+        await adapter.test(
+            "my bydget is 600$",
+            "Please confirm, I have you traveling from: from New York to: Paris departure: 2022-09-21 return: 2022-10-05 price: my bydget is 600$. (1) Yes or (2) No"
+            )
+
+    # Test une annulation de réservation
+    async def test_booking_cancel(self):
+        async def exec_test(turn_context: TurnContext):
+            dialog_context = await dialogs.create_context(turn_context)
+            results = await dialog_context.continue_dialog()
+
+            if results.status == DialogTurnStatus.Empty:
+                await main_dialog.intro_step(dialog_context)
+
+            elif results.status == DialogTurnStatus.Complete:
+                await main_dialog.act_step(dialog_context)
+
+            await conv_state.save_changes(turn_context)
+
+
+        conv_state = ConversationState(MemoryStorage())
+        dialogs_state = conv_state.create_property("dialog-state")
+        dialogs = DialogSet(dialogs_state)
+
+        booking_dialog = BookingDialog()
+        main_dialog = MainDialog(
+            FlightBookingRecognizer(DefaultConfig()), booking_dialog
+        )
+        dialogs.add(booking_dialog)
+
+        text_prompt = await main_dialog.find_dialog(TextPrompt.__name__)
+        dialogs.add(text_prompt)
+
+        wf_dialog = await main_dialog.find_dialog("WFDialog")
+        dialogs.add(wf_dialog)
+
+        adapter = TestAdapter(exec_test)
+
+        await adapter.test("Hello", "What can I help you with today?")
+        await adapter.test("I want to leave from New York", "To what city would you like to travel?")
+        await adapter.test("Cancel", "Cancelling")
+
+    # Test une réservation en fournissant toutes les informations en une seule fois
+    async def test_booking_one_shot(self):
+        async def exec_test(turn_context: TurnContext):
+            dialog_context = await dialogs.create_context(turn_context)
+            results = await dialog_context.continue_dialog()
+
+            if results.status == DialogTurnStatus.Empty:
+                await main_dialog.intro_step(dialog_context)
+
+            elif results.status == DialogTurnStatus.Complete:
+                await main_dialog.act_step(dialog_context)
+
+            await conv_state.save_changes(turn_context)
+
+
+        conv_state = ConversationState(MemoryStorage())
+        dialogs_state = conv_state.create_property("dialog-state")
+        dialogs = DialogSet(dialogs_state)
+
+        booking_dialog = BookingDialog()
+        main_dialog = MainDialog(
+            FlightBookingRecognizer(DefaultConfig()), booking_dialog
+        )
+        dialogs.add(booking_dialog)
+
+        text_prompt = await main_dialog.find_dialog(TextPrompt.__name__)
+        dialogs.add(text_prompt)
+
+        wf_dialog = await main_dialog.find_dialog("WFDialog")
+        dialogs.add(wf_dialog)
+
+        adapter = TestAdapter(exec_test)
+
+        await adapter.test("Hello", "What can I help you with today?")
+        await adapter.test(
+            "I want to book a flight from Paris to Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
+            "Please confirm, I have you traveling from: Paris to: Paris departure: 2022-12-20 return: 2023-01-02 price: 300. (1) Yes or (2) No"
+            )
