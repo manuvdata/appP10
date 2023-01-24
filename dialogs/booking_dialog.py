@@ -7,12 +7,14 @@ from datatypes_date_time.timex import Timex
 from botbuilder.dialogs import WaterfallDialog, WaterfallStepContext, DialogTurnResult
 from botbuilder.dialogs.prompts import ConfirmPrompt, TextPrompt, PromptOptions
 from botbuilder.core import MessageFactory, BotTelemetryClient, NullTelemetryClient
+from botbuilder.core import MessageFactory
 from .cancel_and_help_dialog import CancelAndHelpDialog
 from .date_resolver_dialog import DateResolverDialog
 
 from config import DefaultConfig
 import logging
-#from opencensus.ext.azure.log_exporter import AzureLogHandler
+# ligne a supprimer 
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 CONFIG = DefaultConfig()
 INSTRUMENTATION_KEY = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY
@@ -32,9 +34,10 @@ class BookingDialog(CancelAndHelpDialog):
 
         self.logger = logging.getLogger(__name__)
         
-        #self.logger.addHandler(AzureLogHandler(
-         #   connection_string = INSTRUMENTATION_KEY)
-        #)
+        self.logger.addHandler(AzureLogHandler(
+            #connection_string = INSTRUMENTATION_KEY
+            )
+        )
 
         text_prompt = TextPrompt(TextPrompt.__name__)
 
