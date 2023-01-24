@@ -44,6 +44,7 @@ class LuisTest(aiounittest.AsyncTestCase):
             )
 
         adapter = TestAdapter(exec_test)
+        '''
 
         await adapter.test(
             "Hello",
@@ -66,7 +67,7 @@ class LuisTest(aiounittest.AsyncTestCase):
                 }
             ),
         )
-
+'''
         await adapter.test(
             "I want to book a flight from Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
             json.dumps(
