@@ -205,6 +205,6 @@ class BotTest(aiounittest.AsyncTestCase):
         await adapter.test("Hello", "What can I help you with today?")
         await adapter.test(
             "I want to book a flight from Paris to Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
-            "Please confirm, I have you traveling From: Paris ---- To: Paris ----- Departure: 2022-12-20 ---- return: 2023-01-02---- Budget: 300. (1) Yes or (2) No"
+            "Please confirm, I have you traveling From: Paris ---- To: Paris ----- Departure: 2022-12-20 ---- Return: 2023-01-02---- Budget: 300. (1) Yes or (2) No"
             )
 
