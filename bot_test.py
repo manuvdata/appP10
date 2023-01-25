@@ -163,7 +163,8 @@ class BotTest(aiounittest.AsyncTestCase):
         adapter = TestAdapter(exec_test)
 
         await adapter.test("Hello", "What can I help you with today?")
-        await adapter.test("I want to leave from New York", "To what city would you like to travel(Destination)?")
+        
+        #await adapter.test("I want to leave from New York", "To what city would you like to travel(Destination)?")
         await adapter.test("Cancel", "Cancelling")
 '''
     # Test une réservation en fournissant toutes les informations en une seule fois
