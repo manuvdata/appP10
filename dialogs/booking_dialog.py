@@ -17,7 +17,7 @@ import logging
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 CONFIG = DefaultConfig()
-INSTRUMENTATION_KEY = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY
+#INSTRUMENTATION_KEY = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY
 
 class BookingDialog(CancelAndHelpDialog):
     """Flight booking implementation."""
