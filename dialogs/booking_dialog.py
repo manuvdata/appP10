@@ -17,7 +17,7 @@ import logging
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 CONFIG = DefaultConfig()
-#INSTRUMENTATION_KEY = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY
+INSTRUMENTATION_KEY = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY
 
 class BookingDialog(CancelAndHelpDialog):
     """Flight booking implementation."""
@@ -35,7 +35,7 @@ class BookingDialog(CancelAndHelpDialog):
         self.logger = logging.getLogger(__name__)
         
         self.logger.addHandler(AzureLogHandler(
-            connection_string = "InstrumentationKey=ed940d42-dd7b-4ff5-ba82-8c101cf0c538;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/"
+            connection_string = INSTRUMENTATION_KEY
             )
         )
 
