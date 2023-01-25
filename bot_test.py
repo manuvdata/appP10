@@ -119,13 +119,13 @@ class BotTest(aiounittest.AsyncTestCase):
         adapter = TestAdapter(exec_test)
 
         await adapter.test("Hello", "What can I help you with today?")
-        await adapter.test("I want to go to Paris", "From what city will you be travelling?")
+        await adapter.test("I want to go to Paris", "From what city will you be travelling(Départ)?")
         await adapter.test("from New York", "On what date would you like to travel?")
         await adapter.test("the 21 september 2022", "On what date would you like to return?")
         await adapter.test("the 5 october 2022", "What is your budget for traveling?")
         await adapter.test(
             "my bydget is 600$",
-            "Please confirm, I have you traveling from: from New York to: Paris departure: 2022-09-21 return: 2022-10-05 price: my bydget is 600$. (1) Yes or (2) No"
+            "Please confirm, I have you traveling From: from New York ----to: Paris ---- Departure: 2022-09-21 ---- Return: 2022-10-05 ---- Budget: my bydget is 600$. (1) Yes or (2) No"
             )
 
     # Test une annulation de réservation
@@ -162,7 +162,7 @@ class BotTest(aiounittest.AsyncTestCase):
         adapter = TestAdapter(exec_test)
 
         await adapter.test("Hello", "What can I help you with today?")
-        await adapter.test("I want to leave from New York", "To what city would you like to travel?")
+        await adapter.test("I want to leave from New York", "To what city would you like to travel(Départ)?")
         await adapter.test("Cancel", "Cancelling")
 
     # Test une réservation en fournissant toutes les informations en une seule fois
@@ -201,5 +201,5 @@ class BotTest(aiounittest.AsyncTestCase):
         await adapter.test("Hello", "What can I help you with today?")
         await adapter.test(
             "I want to book a flight from Paris to Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
-            "Please confirm, I have you traveling from: Paris to: Paris departure: 2022-12-20 return: 2023-01-02 price: 300. (1) Yes or (2) No"
+            "Please confirm, I have you traveling from: Paris ----to: Paris ---- Departure: 2022-12-20 ---- return: 2023-01-02 ---- Budget: 300. (1) Yes or (2) No"
             )
