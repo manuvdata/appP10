@@ -44,30 +44,7 @@ class LuisTest(aiounittest.AsyncTestCase):
             )
 
         adapter = TestAdapter(exec_test)
-        '''
 
-        await adapter.test(
-            "Hello",
-            json.dumps(
-                {
-                    "intent": Intent.NONE_INTENT.value,
-                    "booking_details": None,
-                }
-            ),
-        )
-
-        await adapter.test(
-            "Hello, I want to go to Paris",
-            json.dumps(
-                {
-                    "intent": Intent.BOOK_FLIGHT.value,
-                    "booking_details": BookingDetails(
-                        destination="Paris"
-                    ).__dict__,
-                }
-            ),
-        )
-'''
         await adapter.test(
             "I want to book a flight from Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
             json.dumps(
@@ -168,6 +145,89 @@ class BotTest(aiounittest.AsyncTestCase):
         
         await adapter.test("I want to leave from New York", "To what city would you like to travel(Destination)?")
         await adapter.test("Cancel", "Cancelling")
+        
+        
+        
+        # Test de l'aide
+    async def test_booking_helps(self):
+        async def exec_test(turn_context: TurnContext):
+            dialog_context = await dialogs.create_context(turn_context)
+            results = await dialog_context.continue_dialog()
+
+            if results.status == DialogTurnStatus.Empty:
+                await main_dialog.intro_step(dialog_context)
+
+            elif results.status == DialogTurnStatus.Complete:
+                await main_dialog.act_step(dialog_context)
+
+            await conv_state.save_changes(turn_context)
+
+
+        conv_state = ConversationState(MemoryStorage())
+        dialogs_state = conv_state.create_property("dialog-state")
+        dialogs = DialogSet(dialogs_state)
+
+        booking_dialog = BookingDialog()
+        main_dialog = MainDialog(
+            FlightBookingRecognizer(DefaultConfig()), booking_dialog
+        )
+        dialogs.add(booking_dialog)
+
+        text_prompt = await main_dialog.find_dialog(TextPrompt.__name__)
+        dialogs.add(text_prompt)
+
+        wf_dialog = await main_dialog.find_dialog("WFDialog")
+        dialogs.add(wf_dialog)
+
+        adapter = TestAdapter(exec_test)
+
+        await adapter.test("Hello", "What can I help you with today?")
+        
+        await adapter.test("I want to leave from Paris", "To what city would you like to travel(Destination)?")
+        await adapter.test("help", "Show Help...")    
+        
+        
+        
+       # Test une réservation avec date mal saisie
+    async def test_booking_pb_date(self):
+        async def exec_test(turn_context: TurnContext):
+            dialog_context = await dialogs.create_context(turn_context)
+            results = await dialog_context.continue_dialog()
+
+            if results.status == DialogTurnStatus.Empty:
+                await main_dialog.intro_step(dialog_context)
+
+            elif results.status == DialogTurnStatus.Complete:
+                await main_dialog.act_step(dialog_context)
+
+            await conv_state.save_changes(turn_context)
+
+
+        conv_state = ConversationState(MemoryStorage())
+        dialogs_state = conv_state.create_property("dialog-state")
+        dialogs = DialogSet(dialogs_state)
+
+        booking_dialog = BookingDialog()
+        main_dialog = MainDialog(
+            FlightBookingRecognizer(DefaultConfig()), booking_dialog
+        )
+        dialogs.add(booking_dialog)
+
+        text_prompt = await main_dialog.find_dialog(TextPrompt.__name__)
+        dialogs.add(text_prompt)
+
+        wf_dialog = await main_dialog.find_dialog("WFDialog")
+        dialogs.add(wf_dialog)
+
+        adapter = TestAdapter(exec_test)
+
+        await adapter.test("Hello", "What can I help you with today?")
+        await adapter.test("I want to book a flight from Los Angeles to Berlin. My budget is 300$", "On what date would you like to travel?")
+        await adapter.test("from New York", "On what date would you like to travel?")
+        await adapter.test("15/10", "I'm sorry, for best results, please enter your travel date including the month, day and year.")
+    
+        
+        
 
     # Test une réservation en fournissant toutes les informations en une seule fois
     async def test_booking_one_shot(self):
