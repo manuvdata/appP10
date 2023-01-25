@@ -84,6 +84,7 @@ class LuisTest(aiounittest.AsyncTestCase):
         )
   
 class BotTest(aiounittest.AsyncTestCase):
+    instrumentation_key = config.APPINSIGHTS_INSTRUMENTATION_KEY 
     '''
 
     # Test une réservation étape par étape
