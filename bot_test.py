@@ -128,7 +128,7 @@ class BotTest(aiounittest.AsyncTestCase):
         await adapter.test("the 5 october 2022", "What is your budget for traveling?")
         await adapter.test(
             "my bydget is 600$",
-            "Please confirm, I have you traveling From: from New York ---- to: Paris ----- Departure: 2022-09-21 ---- Return: 2022-10-05 ---- Budget: my bydget is 600$. (1) Yes or (2) No"
+            "Please confirm, I have you traveling From: from New York ---- To: Paris ----- Departure: 2022-09-21 ---- Return: 2022-10-05---- Budget: my bydget is 600$. (1) Yes or (2) No"
             )
 
     # Test une annulation de réservation
