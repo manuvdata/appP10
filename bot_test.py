@@ -85,8 +85,8 @@ class LuisTest(aiounittest.AsyncTestCase):
   
 class BotTest(aiounittest.AsyncTestCase):
     CONFIG = DefaultConfig()
-    instrumentation_key = CONFIG.APPINSIGHTS_INSTRUMENTATION_KEY 
-    '''
+   
+    
 
     # Test une réservation étape par étape
     async def test_booking_step_by_step(self):
@@ -130,7 +130,7 @@ class BotTest(aiounittest.AsyncTestCase):
             "my bydget is 600$",
             "Please confirm, I have you traveling From: from New York ----to: Paris ---- Departure: 2022-09-21 ---- Return: 2022-10-05 ---- Budget: my bydget is 600$. (1) Yes or (2) No"
             )
-'''
+
     # Test une annulation de réservation
     async def test_booking_cancel(self):
         async def exec_test(turn_context: TurnContext):
@@ -166,9 +166,9 @@ class BotTest(aiounittest.AsyncTestCase):
 
         await adapter.test("Hello", "What can I help you with today?")
         
-        #await adapter.test("I want to leave from New York", "To what city would you like to travel(Destination)?")
+        await adapter.test("I want to leave from New York", "To what city would you like to travel(Destination)?")
         await adapter.test("Cancel", "Cancelling")
-'''
+
     # Test une réservation en fournissant toutes les informations en une seule fois
     async def test_booking_one_shot(self):
         async def exec_test(turn_context: TurnContext):
@@ -207,4 +207,4 @@ class BotTest(aiounittest.AsyncTestCase):
             "I want to book a flight from Paris to Berlin. My budget is 300$. I will leave the 20 december 2022 and coming back the 2 january 2023.",
             "Please confirm, I have you traveling from: Paris ----to: Paris ---- Departure: 2022-12-20 ---- return: 2023-01-02 ---- Budget: 300. (1) Yes or (2) No"
             )
-'''
+
