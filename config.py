@@ -15,6 +15,6 @@ class DefaultConfig:
     LUIS_API_KEY = os.environ.get("LuisAPIKey", "033c3af6d53b49c7afa2cbe5637d578c")
     LUIS_API_HOST_NAME = os.environ.get("LuisAPIHostName", "p10evinstance.cognitiveservices.azure.com/")
     APPINSIGHTS_INSTRUMENTATION_KEY = os.environ.get(
-        "AppInsightsInstrumentationKey", "ed940d42-dd7b-4ff5-ba82-8c101cf0c538"
+        "AppInsightsInstrumentationKey", "InstrumentationKey=ed940d42-dd7b-4ff5-ba82-8c101cf0c538;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/"
     )
     
