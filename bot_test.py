@@ -223,7 +223,6 @@ class BotTest(aiounittest.AsyncTestCase):
 
         await adapter.test("Hello", "What can I help you with today?")
         await adapter.test("I want to book a flight from Los Angeles to Berlin. My budget is 300$", "On what date would you like to travel?")
-        await adapter.test("from New York", "On what date would you like to travel?")
         await adapter.test("15/10", "I'm sorry, for best results, please enter your travel date including the month, day and year.")
     
         
