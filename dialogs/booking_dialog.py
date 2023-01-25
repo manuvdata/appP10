@@ -35,7 +35,7 @@ class BookingDialog(CancelAndHelpDialog):
         self.logger = logging.getLogger(__name__)
         
         self.logger.addHandler(AzureLogHandler(
-            #connection_string = INSTRUMENTATION_KEY
+            connection_string = "InstrumentationKey=ed940d42-dd7b-4ff5-ba82-8c101cf0c538;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/"
             )
         )
 
